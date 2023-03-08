@@ -1,6 +1,13 @@
-import { IsNotEmpty, IsEnum, IsInt, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsEnum,
+  IsInt,
+  MinLength,
+  MaxLength,
+} from 'class-validator';
 import { Sexo } from 'src/conf/core/enum/sexo.enum';
 export class UserCreateDto {
+  @MaxLength(150)
   @IsNotEmpty()
   readonly nome: string;
 
@@ -8,7 +15,7 @@ export class UserCreateDto {
   @MinLength(11)
   readonly cpf: string;
 
-  @IsNotEmpty()
+  @IsInt()
   readonly telefone: number;
 
   @IsInt()

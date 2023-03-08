@@ -3,6 +3,8 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserGenerateToken } from './interface';
 import { UserCreateDto } from '../users/DTO/user.create.dto';
+import { plainToClass } from 'class-transformer';
+import { UsersDto } from '../users/DTO/users.dto';
 
 @Injectable()
 export class AuthService {
@@ -20,23 +22,16 @@ export class AuthService {
     if (!match) {
       return null;
     }
-    const result = user['dataValues'];
-    return result;
+    return user;
   }
   public async login(user: any) {
     const token = await this.generateToken({ id: user.id });
-    return { user, token };
+    return { user: plainToClass(UsersDto, user), token };
   }
   public async create(user: UserCreateDto) {
-    console.log(user);
-
     const newUser = await this.userService.create(user);
     const result = newUser['dataValues'];
-
-    // generate token
     const token = await this.generateToken({ id: result.id });
-
-    // return the user and the token
     return { token };
   }
 
