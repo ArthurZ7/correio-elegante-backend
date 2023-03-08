@@ -21,4 +21,7 @@ export class UsersService {
   async findOneById(id: number): Promise<Users> {
     return await this.userRepository.findOne<Users>({ where: { id } });
   }
+  async saveToken(id: number, token: string): Promise<any> {
+    await this.userRepository.update({ token }, { where: { id: id } });
+  }
 }
