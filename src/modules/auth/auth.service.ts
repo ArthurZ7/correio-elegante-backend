@@ -9,20 +9,15 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(nome: string, cpf: string, idade: number) {
-    // find if user exist with this email
+  async validateUser(nome: string, cpf: string) {
     const user = await this.userService.findOneByCpf(cpf);
     if (!user) {
       return null;
     }
-
-    // find if user password match
-    const match = nome === user.nome && idade === user.idade;
+    const match = nome === user.nome;
     if (!match) {
       return null;
     }
-
-    // tslint:disable-next-line: no-string-literal
     const result = user['dataValues'];
     return result;
   }
@@ -31,23 +26,18 @@ export class AuthService {
     return { user, token };
   }
   public async create(user: any) {
-    // hash the password
-
-    // create the user
     const newUser = await this.userService.create(user);
-
-    // tslint:disable-next-line: no-string-literal
     const result = newUser['dataValues'];
 
     // generate token
     const token = await this.generateToken(result);
 
     // return the user and the token
-    return { user: result, token };
+    return { token };
   }
 
   private async generateToken(user: any) {
-    const token = await this.jwtService.sign(user);
+    const token = await this.jwtService.signAsync(user);
     return token;
   }
 }
