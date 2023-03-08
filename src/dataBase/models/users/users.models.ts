@@ -25,7 +25,7 @@ export class Users extends Model<Users> {
   })
   public_id: number;
 
-  @Unique(false)
+  @Unique(true)
   @Column({
     type: DataType.STRING(150),
     allowNull: false,
@@ -41,10 +41,10 @@ export class Users extends Model<Users> {
 
   @Unique(true)
   @Column({
-    type: DataType.STRING(11),
+    type: DataType.BIGINT,
     allowNull: false,
   })
-  telefone: string;
+  telefone: number;
 
   @Unique(false)
   @Column({

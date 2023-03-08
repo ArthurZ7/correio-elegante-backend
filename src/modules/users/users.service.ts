@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { Op } from 'sequelize';
 import { USERS_REPOSITORY } from 'src/conf/constants';
 import { Users } from 'src/dataBase/models/users/users.models';
 import { UserCreateDto } from './DTO/user.create.dto';
@@ -23,5 +24,14 @@ export class UsersService {
   }
   async saveToken(id: number, token: string): Promise<any> {
     await this.userRepository.update({ token }, { where: { id: id } });
+  }
+  async buscaUsuarioExists(
+    cpf: string,
+    nome: string,
+    telefone: number,
+  ): Promise<Users> {
+    return await this.userRepository.findOne<Users>({
+      where: { [Op.and]: [{ cpf }, { nome }, { telefone }] },
+    });
   }
 }
