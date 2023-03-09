@@ -5,12 +5,14 @@ import { UserGenerateToken } from './interface';
 import { UserCreateDto } from '../users/DTO/user.create.dto';
 import { plainToClass } from 'class-transformer';
 import { UsersDto } from '../users/DTO/users.dto';
+import { JsonToObjectMapperService } from 'src/conf/core/pipes/mapper/jsonToObjectMapper.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly jsonToObjectMapperService: JsonToObjectMapperService,
   ) {}
 
   async validateUser(nome: string, cpf: string) {
@@ -26,7 +28,8 @@ export class AuthService {
   }
   public async login(user: any) {
     const token = await this.generateToken({ id: user.id });
-    return { user: plainToClass(UsersDto, user), token };
+    const dto = this.jsonToObjectMapperService.mapJsonToClass(user, UsersDto);
+    return { user: dto, token };
   }
   public async create(user: UserCreateDto) {
     const newUser = await this.userService.create(user);

@@ -20,7 +20,7 @@ export const dataBaseProviders = [
       }
       const sequelize = new Sequelize(config);
       sequelize.addModels([Users]);
-      await sequelize.sync({ force: true });
+      await sequelize.sync({ force: false });
       return sequelize;
     },
   },
