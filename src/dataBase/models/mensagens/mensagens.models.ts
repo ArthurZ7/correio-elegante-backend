@@ -23,14 +23,14 @@ export class Mensagens extends Model<Mensagens> {
   @Unique(false)
   @Column({
     type: DataType.STRING(1000),
-    allowNull: true,
+    allowNull: false,
   })
   mensagem: string;
 
   @Unique(false)
   @Column({
     type: DataType.UUID,
-    allowNull: true,
+    allowNull: false,
     references: {
       model: Users,
       key: 'public_id',
@@ -41,11 +41,19 @@ export class Mensagens extends Model<Mensagens> {
   @Unique(false)
   @Column({
     type: DataType.INTEGER,
-    allowNull: true,
+    allowNull: false,
     references: {
       model: Users,
       key: 'id',
     },
   })
   destinatario: number;
+
+  @Unique(false)
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  })
+  lida: boolean;
 }

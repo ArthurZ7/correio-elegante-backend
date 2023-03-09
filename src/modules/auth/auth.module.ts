@@ -6,7 +6,6 @@ import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
-import { JsonToObjectMapperService } from 'src/conf/core/pipes/mapper/jsonToObjectMapper.service';
 import { JsonToObjectMapperModule } from 'src/conf/core/pipes/mapper/jsonToObjectMapper.module';
 
 @Module({
