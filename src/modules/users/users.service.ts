@@ -34,4 +34,7 @@ export class UsersService {
       where: { [Op.and]: [{ cpf }, { nome }, { telefone }] },
     });
   }
+  async findOneByPublicId(public_id: string) {
+    return await this.userRepository.findOne<Users>({ where: { public_id } });
+  }
 }

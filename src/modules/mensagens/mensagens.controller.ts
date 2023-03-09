@@ -13,6 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Mensagens } from 'src/dataBase/models/mensagens/mensagens.models';
 import { UsersService } from '../users/users.service';
 import { MensagemCreateDto } from './DTO/mensagem.create.dto';
+import { MensagemResponseDto } from './DTO/mensagem.resposta.dto';
 import { MensagensService } from './mensagens.service';
 
 @Controller('mensagens')
@@ -31,12 +32,12 @@ export class MensagensController {
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
   async create(
-    @Body() post: MensagemCreateDto,
+    @Body() mensagem: MensagemCreateDto,
     @Request() req,
   ): Promise<Mensagens> {
     // create a new post and return the newly created post
     const user = await this.userService.findOneById(req.user.id);
-    await this.mensagensService.create(post, user.public_id);
+    await this.mensagensService.create(mensagem, user.public_id);
     return;
   }
 
@@ -46,14 +47,31 @@ export class MensagensController {
     // get the number of row affected and the updated post
     const { numberOfAffectedRows, updatedMensagenst } =
       await this.mensagensService.update(id);
-
     // if the number of row affected is zero,
     // it means the post doesn't exist in our db
     if (numberOfAffectedRows === 0) {
       throw new NotFoundException("This Post doesn't exist");
     }
-
     // return the updated post
     return updatedMensagenst;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('resposta')
+  async resposta(
+    @Body() mensagem: MensagemResponseDto,
+    @Request() req,
+  ): Promise<Mensagens> {
+    // create a new post and return the newly created post
+    const remetente = await this.userService.findOneByPublicId(
+      mensagem.remetente,
+    );
+    const user = await this.userService.findOneById(req.user.id);
+    await this.mensagensService.createResposta(
+      mensagem,
+      user.public_id,
+      remetente.id,
+    );
+    return;
   }
 }
