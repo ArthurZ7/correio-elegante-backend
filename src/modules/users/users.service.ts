@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Op } from 'sequelize';
 import { USERS_REPOSITORY } from 'src/conf/constants';
 import { Users } from 'src/dataBase/models/users/users.models';
+import { UserBioDto } from './DTO/user.bio.dto';
 import { UserCreateDto } from './DTO/user.create.dto';
 import { UsersDto } from './DTO/users.dto';
 
@@ -39,5 +40,11 @@ export class UsersService {
   }
   async findAll() {
     return await this.userRepository.findAll<Users>();
+  }
+  async updateBio(bio: UserBioDto, id: any) {
+    return await this.userRepository.update(
+      { bio: bio.bio },
+      { where: { id: id } },
+    );
   }
 }
