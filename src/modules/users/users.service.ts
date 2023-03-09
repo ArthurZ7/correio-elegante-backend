@@ -37,4 +37,7 @@ export class UsersService {
   async findOneByPublicId(public_id: string) {
     return await this.userRepository.findOne<Users>({ where: { public_id } });
   }
+  async findAll() {
+    return await this.userRepository.findAll<Users>();
+  }
 }
