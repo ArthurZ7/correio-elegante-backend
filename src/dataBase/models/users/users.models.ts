@@ -23,7 +23,7 @@ export class Users extends Model<Users> {
     allowNull: false,
     defaultValue: DataType.UUIDV4,
   })
-  public_id: number;
+  public_id: string;
 
   @Unique(true)
   @Column({
