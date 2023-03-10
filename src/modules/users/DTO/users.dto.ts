@@ -1,7 +1,9 @@
+import { Expose } from 'class-transformer';
 export class UsersDto {
-  readonly id: number;
-  readonly nome: string;
-  readonly idade: number;
-  readonly bio: string;
-  readonly foto: string;
+  @Expose() public id: number;
+  @Expose() public nome: string;
+  @Expose() public idade: number;
+  @Expose() public bio: string;
+  @Expose() public foto: string;
+  @Expose() public sexo: string;
 }
